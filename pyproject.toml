@@ -1,0 +1,16 @@
+[project]
+name = "ru_text_normalization"
+version = "0.1.0"
+description = "Triton server inference for text normalization (convert Russian text from written expressions into spoken forms) before ASR"
+authors = [
+    {name = "Viktoriya Klyueva",email = "vika_klyueva@inbox.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
