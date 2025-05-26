@@ -1,0 +1,2 @@
+SEED = 42
+DEL_TOKEN = "␞"
