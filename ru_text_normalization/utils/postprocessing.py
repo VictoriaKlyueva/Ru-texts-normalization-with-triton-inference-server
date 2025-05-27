@@ -2,6 +2,7 @@ import json
 import os
 import re
 import torch
+from pathlib import Path
 
 from ..constants.constants import DEL_TOKEN
 from ..constants.vebratim_dict import vebratim_dict
@@ -34,7 +35,8 @@ class TextPostprocessor:
         """
         abbreviations_set = set()
         try:
-            with open(os.path.join('../data', 'abbreviations.json'), 'r', encoding='utf-8') as f:
+            data_dir = Path(__file__).parent.parent / 'data'
+            with open(data_dir / 'abbreviations.json', 'r', encoding='utf-8') as f:
                 abbreviations_set = {x.strip() for x in json.load(f) if x.strip()}
         except Exception as e:
             print(f"Error loading abbreviations: {e}")

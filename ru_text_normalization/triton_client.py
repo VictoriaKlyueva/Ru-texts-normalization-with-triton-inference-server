@@ -2,6 +2,7 @@ import tritonclient.http as httpclient
 from tritonclient.utils import np_to_triton_dtype
 import numpy as np
 from typing import List, Optional, Tuple
+from transformers import GPT2Tokenizer
 from ru_text_normalization.utils.logger import logger
 from ru_text_normalization.utils.preprocessing import TextPreprocessor
 from ru_text_normalization.utils.postprocessing import TextPostprocessor
@@ -16,23 +17,25 @@ class TritonClient:
         client (httpclient.InferenceServerClient): HTTP client for Triton
         preprocessor (TextPreprocessor): Text preprocessor
         postprocessor (TextPostprocessor): Text postprocessor
+        tokenizer (GPT2Tokenizer): Tokenizer for text processing
     """
     
-    def __init__(self, url: str = "localhost:8000"):
+    def __init__(self, url: str = "localhost:8000", model_name: str = "vikosik3000/FRED_text_normalization"):
         """
         Initialize Triton client.
         
         Args:
             url (str): Triton server URL
+            model_name (str): Name of the model to use for tokenization
         """
         self.url = url
         self.client = httpclient.InferenceServerClient(url=url)
         self.preprocessor = TextPreprocessor()
         self.postprocessor = TextPostprocessor()
+        self.tokenizer = GPT2Tokenizer.from_pretrained(model_name)
         logger.info(f"Triton client initialized with URL: {url}")
 
-    @staticmethod
-    def prepare_input_tensors(text: str) -> List[httpclient.InferInput]:
+    def prepare_input_tensors(self, text: str) -> List[httpclient.InferInput]:
         """
         Prepare input tensors for model.
         
@@ -44,13 +47,20 @@ class TritonClient:
         """
         logger.info(f"Preparing input tensors for text: {text}")
         try:
-            # Prepare input data
-            input_data = np.array([text.encode('utf-8')], dtype=np.object_)
+            # Preprocess text
+            preprocessed_text = self.preprocessor.preprocess_sentence(text)
+            
+            # Tokenize text
+            input_ids = np.array([self.tokenizer.encode(preprocessed_text)], dtype=np.int64)
+            attention_mask = np.ones_like(input_ids, dtype=np.int64)
             
             # Create input tensors
             inputs = []
-            inputs.append(httpclient.InferInput("input", input_data.shape, np_to_triton_dtype(input_data.dtype)))
-            inputs[0].set_data_from_numpy(input_data)
+            inputs.append(httpclient.InferInput("input_ids", input_ids.shape, np_to_triton_dtype(input_ids.dtype)))
+            inputs[0].set_data_from_numpy(input_ids)
+            
+            inputs.append(httpclient.InferInput("attention_mask", attention_mask.shape, np_to_triton_dtype(attention_mask.dtype)))
+            inputs[1].set_data_from_numpy(attention_mask)
             
             logger.info("Input tensors prepared successfully")
             return inputs
@@ -79,8 +89,12 @@ class TritonClient:
             logger.info("Received response from server")
 
             # Get and process results
-            output_data = results.as_numpy("output")
-            normalized_text = output_data[0].decode('utf-8')
+            logits = results.as_numpy("logits")
+            output_ids = np.argmax(logits, axis=-1)
+            output_text = self.tokenizer.decode(output_ids[0])
+            
+            # Postprocess output
+            normalized_text = self.postprocessor.postprocess_outputs(text, output_text)
             
             logger.info(f"Normalization completed successfully. Result: {normalized_text}")
             return normalized_text

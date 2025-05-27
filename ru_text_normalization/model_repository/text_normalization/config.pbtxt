@@ -1,167 +1,22 @@
 backend: "onnxruntime"
 default_model_filename: "FRED_text_normalization_trans_onnx.onnx"
 max_batch_size: 8
-input [
-  {
-    name: "input_ids"
-    data_type: TYPE_UINT32
-    dims: [ -1 ]
-  },
-  {
-    name: "sequence_length"
-    data_type: TYPE_UINT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "runtime_top_k"
-    data_type: TYPE_UINT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "runtime_top_p"
-    data_type: TYPE_FP32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "beam_search_diversity_rate"
-    data_type: TYPE_FP32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "temperature"
-    data_type: TYPE_FP32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "len_penalty"
-    data_type: TYPE_FP32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "repetition_penalty"
-    data_type: TYPE_FP32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "random_seed"
-    data_type: TYPE_UINT64
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "is_return_log_probs"
-    data_type: TYPE_BOOL
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "max_output_len"
-    data_type: TYPE_UINT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "beam_width"
-    data_type: TYPE_UINT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "start_id"
-    data_type: TYPE_UINT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "end_id"
-    data_type: TYPE_UINT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "bad_words_list"
-    data_type: TYPE_INT32
-    dims: [ 2, -1 ]
-  },
-  {
-    name: "stop_words_list"
-    data_type: TYPE_INT32
-    dims: [ 2, -1 ]
-  },
-  {
-    name: "prompt_learning_task_name_ids"
-    data_type: TYPE_UINT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "request_prompt_lengths"
-    data_type: TYPE_UINT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "request_prompt_embedding"
-    data_type: TYPE_FP16
-    dims: [ -1, -1 ]
-  },
-  {
-    name: "ia3_tasks"
-    data_type: TYPE_INT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "top_p_decay"
-    data_type: TYPE_FP32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "top_p_min"
-    data_type: TYPE_FP32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  },
-  {
-    name: "top_p_reset_ids"
-    data_type: TYPE_UINT32
-    dims: [ 1 ]
-    reshape: { shape: [ ] }
-  }
-]
-output [
-  {
-    name: "output_ids"
-    data_type: TYPE_INT32
-    dims: [ -1, -1 ]
-  },
-  {
-    name: "sequence_length"
-    data_type: TYPE_INT32
-    dims: [ -1 ]
-  },
-  {
-    name: "cum_log_probs"
-    data_type: TYPE_FP32
-    dims: [ -1 ]
-  },
-  {
-    name: "output_log_probs"
-    data_type: TYPE_FP32
-    dims: [ -1, -1 ]
-  }
-]
+
 parameters {
   key: "model_type"
   value: {
     string_value: "T5"
   }
+}
+
+instance_group [
+  {
+    count: 1
+    kind: KIND_GPU
+  }
+]
+
+dynamic_batching {
+  preferred_batch_size: [ 1, 4 ]
+  max_queue_delay_microseconds: 100
 }
