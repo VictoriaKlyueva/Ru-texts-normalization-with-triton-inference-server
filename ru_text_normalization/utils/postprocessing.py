@@ -3,9 +3,9 @@ import os
 import re
 import torch
 
-from ru_text_normalization.constants.constants import DEL_TOKEN
-from ru_text_normalization.constants.vebratim_dict import vebratim_dict
-from ru_text_normalization.utils.preprocessing import TextPreprocessor
+from ..constants.constants import DEL_TOKEN
+from ..constants.vebratim_dict import vebratim_dict
+from ..utils.preprocessing import TextPreprocessor
 
 
 class TextPostprocessor:

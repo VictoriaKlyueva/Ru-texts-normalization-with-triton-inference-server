@@ -2,9 +2,9 @@ import tritonclient.http as httpclient
 from tritonclient.utils import np_to_triton_dtype
 import numpy as np
 from typing import List, Optional, Tuple
-from utils.logger import logger
-from utils.preprocessing import TextPreprocessor
-from utils.postprocessing import TextPostprocessor
+from ru_text_normalization.utils.logger import logger
+from ru_text_normalization.utils.preprocessing import TextPreprocessor
+from ru_text_normalization.utils.postprocessing import TextPostprocessor
 
 
 class TritonClient:
