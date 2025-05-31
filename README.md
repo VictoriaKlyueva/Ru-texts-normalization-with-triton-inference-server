@@ -23,13 +23,36 @@ Best score on Kaggle: **0.97591** on Public and **0.97519** on Private
 </tbody>
 </table>
 
+### Models metrics
+
+<TODO>
+
 ## Software Engineer part
 
 It contains code for inference the model using Triton Inference Server
 
-### Used tools
-- Poetry
-- ClearML
-- Optuna
-- Catboost
-- Git
+### How to run
+
+1. Clone repository
+  ```bash
+  git clone https://github.com/VictoriaKlyueva/Ru-texts-normalization-triton-server.git
+  ```
+
+2. Run server
+  ```bash
+  docker-compose up --build
+  ```
+
+3. Configure poetry
+  ```bash
+  pip install poetry
+  poetry install --no-interaction --no-ansi
+  ```
+
+4. Run client
+  ```bash
+  poetry run python ru_text_normalization/triton_client.py
+  ```
+
+## Author
+- `Klyueva Victoria, 972302`
