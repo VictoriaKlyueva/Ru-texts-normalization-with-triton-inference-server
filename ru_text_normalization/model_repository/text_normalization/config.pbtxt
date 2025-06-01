@@ -4,16 +4,21 @@ max_batch_size: 4
 
 input [
     {
-        name: "text"
-        data_type: TYPE_STRING
+        name: "input_ids"
+        data_type: TYPE_INT64
+        dims: [ -1 ]
+    },
+    {
+        name: "attention_mask"
+        data_type: TYPE_INT64
         dims: [ -1 ]
     }
 ]
 
 output [
     {
-        name: "output_text"
-        data_type: TYPE_STRING
+        name: "output_ids"
+        data_type: TYPE_INT64
         dims: [ -1 ]
     }
 ]
