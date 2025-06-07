@@ -51,7 +51,7 @@ output [
 parameters {
   key: "tokenizer_dir"
   value: {
-    string_value: "/app/ru_text_normalization/hf_model"
+    string_value: "/hf_model"
   }
 }
 

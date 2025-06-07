@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/tritonserver:24.07-trtllm-python-py3
+FROM nvcr.io/nvidia/tritonserver:24.08-trtllm-python-py3
 
 WORKDIR /app
 # Копирование файлов проекта

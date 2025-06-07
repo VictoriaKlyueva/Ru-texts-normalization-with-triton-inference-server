@@ -17,22 +17,20 @@ class TritonClient:
         client (httpclient.InferenceServerClient): HTTP client for Triton
         preprocessor (TextPreprocessor): Text preprocessor
         postprocessor (TextPostprocessor): Text postprocessor
-        tokenizer (AutoTokenizer): Tokenizer for text processing
     """
 
-    def __init__(self, url: str = "localhost:8000", model_name: str = "vikosik3000/FRED_text_normalization"):
+    def __init__(self, url: str = "localhost:8000"):
         """
         Initialize Triton client.
 
         Args:
             url (str): Triton server URL
-            model_name (str): Name of the model to use for tokenization
+            hf_model_name (str): Name of the model to use for tokenization
         """
         self.url = url
         self.client = httpclient.InferenceServerClient(url=url)
         self.preprocessor = TextPreprocessor()
         self.postprocessor = TextPostprocessor()
-        self.tokenizer = GPT2Tokenizer.from_pretrained(model_name, eos_token='</s>')
         self.max_input_length = 256
         self.max_output_length = 256
 
