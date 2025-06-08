@@ -102,15 +102,15 @@ It contains code for inference the model using Triton Inference Server
   docker-compose up --build
   ```
 
-3. Configure poetry
+3. Install triton SDK and run tritonserver SDK
   ```bash
-  pip install poetry
-  poetry install --no-interaction --no-ansi
+  docker pull nvcr.io/nvidia/tritonserver:24.08-py3-sdk
+  docker run --gpus all --rm -it --net host nvcr.io/nvidia/tritonserver:24.08-py3-sdk
   ```
 
-4. Run client
+4. Run Perf Analyzer for tensorrt_llm model
   ```bash
-  poetry run python ru_text_normalization/triton_client.py
+  perf_analyzer -m tensorrt_llm model
   ```
 
 ## Author
