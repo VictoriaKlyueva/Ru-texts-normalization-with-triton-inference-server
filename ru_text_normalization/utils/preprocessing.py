@@ -73,7 +73,10 @@ class TextPreprocessor:
             str: Preprocessed sentence in model format
         """
         if isinstance(sentence, str):
-            sentence = sentence.split(DEL_TOKEN)
+            if DEL_TOKEN in sentence:
+                sentence = sentence.split(DEL_TOKEN)
+            else:
+                sentence = sentence.split()
 
         result = '<SC1>'
         count = 0
