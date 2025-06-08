@@ -1,3 +1,6 @@
+# Log files
 *.log
+
+# Model's weights (too large)
 *.onnx
-/ru_text_normalization/model_repository/text_normalization/1
+*engine
