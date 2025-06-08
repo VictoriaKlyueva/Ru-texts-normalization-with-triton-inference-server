@@ -4,3 +4,4 @@
 # Model's weights (too large)
 *.onnx
 *.engine
+*.safetensors
