@@ -7,7 +7,7 @@ Notebook: [notebook](https://colab.research.google.com/drive/1F5uJ9V5_pY8qXs-7z9
 All project files on Google Drive: [project](https://drive.google.com/drive/folders/1e44PCViPQSdO-VEQimxptiJYGkPGz5eN?usp=sharing)\
 Best score on Kaggle: **0.97591** on Public and **0.97519** on Private
 
-<img src="https://github.com/VictoriaKlyueva/Ru-texts-normalization-triton-server/blob/readme/images/kaggle_leaderboard_screen">
+<img src="https://github.com/VictoriaKlyueva/Ru-texts-normalization-with-triton-inference-server/blob/readme/images/kaggle_leaderboard_screen">
 
 ### Screenshots from Wandb
 <table>
@@ -17,8 +17,8 @@ Best score on Kaggle: **0.97591** on Public and **0.97519** on Private
     <td>Validations metrics</td>
   </tr>
   <tr>
-    <td><img src="https://github.com/VictoriaKlyueva/Ru-texts-normalization-triton-server/blob/readme/images/wandb_train.png"></td>
-    <td><img src="https://github.com/VictoriaKlyueva/Ru-texts-normalization-triton-server/blob/readme/images/wandb_test.png"></td>
+    <td><img src="https://github.com/VictoriaKlyueva/Ru-texts-normalization-with-triton-inference-server/blob/readme/images/wandb_train.png"></td>
+    <td><img src="https://github.com/VictoriaKlyueva/Ru-texts-normalization-with-triton-inference-server/blob/readme/images/wandb_test.png"></td>
   </tr>
 </tbody>
 </table>
@@ -102,15 +102,15 @@ It contains code for inference the model using Triton Inference Server
   docker-compose up --build
   ```
 
-3. Configure poetry
+3. Install triton SDK and run tritonserver SDK
   ```bash
-  pip install poetry
-  poetry install --no-interaction --no-ansi
+  docker pull nvcr.io/nvidia/tritonserver:24.08-py3-sdk
+  docker run --gpus all --rm -it --net host nvcr.io/nvidia/tritonserver:24.08-py3-sdk
   ```
 
-4. Run client
+4. Run Perf Analyzer for tensorrt_llm model
   ```bash
-  poetry run python ru_text_normalization/triton_client.py
+  perf_analyzer -m tensorrt_llm model
   ```
 
 ## Author
