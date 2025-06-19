@@ -92,9 +92,11 @@ It contains code for inference the model using Triton Inference Server
 
 ### How to run
 
-1. Clone repository
+1. Clone repositories
   ```bash
   git clone https://github.com/VictoriaKlyueva/Ru-texts-normalization-triton-server.git
+  cd ru_text_normalization/hf_model
+  git clone https://huggingface.co/vikosik3000/FRED_text_normalization  
   ```
 
 2. Run server
